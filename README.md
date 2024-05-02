@@ -4,4 +4,5 @@
 
 В файле [poisson_dataset_example.py](./poisson_dataset_example.py) представлен пример работы ядра алгоритма на датасете ["COAL MINING DISASTERS UK"](https://www.kaggle.com/datasets/nabamitachakraborty/coal-mine-disastersuk), фиксирующем ежегодное количество катастроф в шахтах, повлекших 10 и более жертв. В нём нет блока обнаружения разладки, при этом ядро алгоритма проводит анализ всех данных и строит по ним вероятные длины пробега, наиболее вероятная из которых и показана на графике. В 1887 году были введены новые регуляции эксплуатации шахт, с чем, скорее всего, и связано падение наиболее вероятной длины пробега, указывающее на ралладку. Это согласуется с рассмотренной в [статье](https://arxiv.org/abs/0710.3742) работой алгоритма.
 
-![image](https://github.com/alexdtat/change-point-detection/assets/57017816/4b9f2cba-fe68-4fcd-94e6-ecec2faceb67)
+![image](https://github.com/alexdtat/change-point-detection/assets/57017816/bc05f76d-b10b-4a6a-b18b-01149c7dd8b1)
+
