@@ -26,7 +26,7 @@ years = np.arange(START_YEAR, START_YEAR + series.size + 1, 1)
 
 plt.plot(years, run_lengths_max)
 
-plt.title('Наиболее вероятная длина пробега в каждый год')
+plt.title('Длины пробега при анализе катастроф на шахтах')
 plt.xlabel('Год')
 plt.ylabel('Наиболее вероятная длина пробега')
 
