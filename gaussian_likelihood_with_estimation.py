@@ -40,6 +40,7 @@ class GaussianWithEstimation:
         self.squared_sample_sum += observation ** 2
 
         mean = self.sample_sum / self.gap_size
+        # variance = ((self.squared_sample_sum - (self.sample_sum ** 2) / self.gap_size) / (self.gap_size - 1))
         variance = ((self.squared_sample_sum - (self.sample_sum ** 2) / self.gap_size) / (self.gap_size - 1))
 
         self.means = np.append(self.means, mean)

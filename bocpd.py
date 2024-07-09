@@ -1,3 +1,5 @@
+import sys
+
 import numpy as np
 
 
@@ -28,6 +30,7 @@ class BOCPD:
         # Adjust allocated memory. Maybe can be replaced with appends as in likelihood functions.
         if len(self.growth_probs) == gap_size:
             self.growth_probs = np.resize(self.growth_probs, gap_size * 2)
+            self.growth_probs[gap_size + 1:] = 0.
 
         # 3. Evaluate predictive probabilities for all run lengths and it's parameters inside likelihood functions.
         predictive_probs = self.observation_likelihood.pdf(observation)
@@ -35,14 +38,22 @@ class BOCPD:
         # 4. Evaluate the hazard function for the gap.
         hazard_val = self.hazard_function(np.array(range(gap_size)))
 
+        # print(f"hazard_val = {hazard_val}, predictive_probs = {predictive_probs}")
         # Evaluate the changepoint probability at *this* step (NB: generally it can be found later, with some delay).
         changepoint_prob = np.sum(
             self.growth_probs[0:gap_size] * predictive_probs * hazard_val)
-
+        print(f"predictive_probs {predictive_probs[0:gap_size]}")
+        if np.isnan(changepoint_prob):
+            print(f"time {self.time}")
+            print(f"observation {observation}")
+            print(f"growth_probs {self.growth_probs} {self.growth_probs[0:gap_size]}")
+            print(f"None? = {self.growth_probs[0:gap_size] * predictive_probs * hazard_val}")
+            sys.exit(1)
         # Evaluate growth probabilities, shifting them down and to the right,
         # scaled by (1 - hazard function value) and prediction probabilities.
         self.growth_probs[1:gap_size + 1] = self.growth_probs[0:gap_size] * predictive_probs * (1. - hazard_val)
 
+        print(f"changepoint prob: {changepoint_prob}")
         # 5. Add CP probability.
         self.growth_probs[0] = changepoint_prob
 
@@ -54,6 +65,8 @@ class BOCPD:
 
         # 8. Update parameters of likelihood function for every possible run length (typically appends new values).
         self.observation_likelihood.update_parameters(observation)
+
+        print(self.growth_probs, gap_size, evidence)
 
     def most_likely_run_length(self):
         """
